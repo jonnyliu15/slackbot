@@ -1,14 +1,27 @@
-const http = require('http');
+'use strict'
 
-const hostname = '127.0.0.1';
-const port = 8000;
+const express = require('express')
+const bodyParser = require('body-parser')
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
+// Create a new instance of express
+const app = express()
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+// Tell express to use the body-parser middleware and to not parse extended bodies
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// Route that receives a POST request to /sms
+app.post('/', function (req, res) {
+  const body = req.body.user_name
+  console.log(body)
+  res.set('Content-Type', 'text/plain')
+  res.send(`ok`)
+})
+
+// Tell our app to listen on port 3000
+app.listen(8000, function (err) {
+  if (err) {
+    throw err
+  }
+
+  console.log('Server started on port 8000')
+})
