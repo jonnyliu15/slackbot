@@ -3,21 +3,20 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-// Create a new instance of express
 const app = express()
 
-// Tell express to use the body-parser middleware and to not parse extended bodies
 app.use(bodyParser.urlencoded({ extended: false }))
 
-// Route that receives a POST request to /sms
 app.post('/', function (req, res) {
-  const body = req.body.user_name
-  console.log(body)
+  const body = req.body
+  const { user_name } = body;
+
+
   res.set('Content-Type', 'text/plain')
-  res.send(`ok`)
+  res.send(`Hello ` + user_name + ', here are some FAQs!')
+  res.send(faqText)
 })
 
-// Tell our app to listen on port 3000
 app.listen(8000, function (err) {
   if (err) {
     throw err
