@@ -1,5 +1,7 @@
 'use strict'
 
+const token = process.env.BOT_TOKEN
+const axios = require('axios')
 const express = require('express')
 const bodyParser = require('body-parser')
 
@@ -9,12 +11,20 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.post('/', function (req, res) {
   const body = req.body
-  const { user_name } = body;
-
-
-  res.set('Content-Type', 'text/plain')
-  res.send(`Hello ` + user_name + ', here are some FAQs!')
-  res.send(faqText)
+  const { user_id } = body
+  
+  let name = ''
+  axios.get('https://slack.com/api/users.info?token=' + token + '&user=' + user_id)
+    .then(response => { 
+        name = response.data.user.profile.first_name
+    })
+    .catch(error => {
+        console.log(error)
+    })
+    .then(() => {
+        res.set('Content-Type', 'text/plain')
+        res.send(`Hello ` + name + ', here are some FAQs!')
+    })
 })
 
 app.listen(8000, function (err) {
