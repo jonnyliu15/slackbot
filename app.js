@@ -9,6 +9,16 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
+let json = {}
+axios.get('https://api.myjson.com/bins/ymuzr')
+  .then(response => {
+    json = response.data,
+    console.log(json)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+
 app.post('/', function (req, res) {
   const body = req.body
   const { user_id } = body
@@ -24,6 +34,7 @@ app.post('/', function (req, res) {
     .then(() => {
         res.set('Content-Type', 'text/plain')
         res.send(`Hello ` + name + ', here are some FAQs!')
+        res.send()
     })
 })
 
